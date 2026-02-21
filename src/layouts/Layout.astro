@@ -1,0 +1,59 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description?: string
+}
+
+const { title, description = '個人サイト' } = Astro.props
+const pathname = Astro.url.pathname
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-gray-900 min-h-screen flex flex-col">
+    <header class="border-b border-gray-200">
+      <nav class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/" class="font-bold text-lg tracking-tight hover:opacity-70 transition-opacity">
+          My Site
+        </a>
+        <ul class="flex gap-6 text-sm">
+          <li>
+            <a
+              href="/"
+              class={`hover:text-gray-500 transition-colors ${pathname === '/' ? 'font-semibold' : ''}`}
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="/blog"
+              class={`hover:text-gray-500 transition-colors ${pathname.startsWith('/blog') ? 'font-semibold' : ''}`}
+            >
+              Blog
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-6 py-12 flex-1 w-full">
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-200">
+      <div class="max-w-2xl mx-auto px-6 py-6 text-center text-sm text-gray-400">
+        &copy; {new Date().getFullYear()} My Site
+      </div>
+    </footer>
+  </body>
+</html>
