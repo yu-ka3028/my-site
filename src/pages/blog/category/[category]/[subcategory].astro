@@ -1,0 +1,97 @@
+---
+import Layout from '../../../../layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import { CATEGORIES, getCategoryLabel } from '../../../../lib/categories'
+import type { CategorySlug } from '../../../../lib/categories'
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog')
+  const paths: { params: { category: string; subcategory: string }; props: object }[] = []
+
+  for (const post of allPosts) {
+    if (post.data.category && post.data.subcategory) {
+      const catPosts = allPosts
+        .filter(p => p.data.category === post.data.category && p.data.subcategory === post.data.subcategory)
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+
+      const already = paths.some(
+        p => p.params.category === post.data.category && p.params.subcategory === post.data.subcategory
+      )
+      if (!already) {
+        paths.push({
+          params: { category: post.data.category, subcategory: post.data.subcategory },
+          props: {
+            categoryLabel: getCategoryLabel(post.data.category as CategorySlug),
+            subcategory: post.data.subcategory,
+            posts: catPosts,
+          },
+        })
+      }
+    }
+  }
+
+  return paths
+}
+
+const { category } = Astro.params
+const { categoryLabel, subcategory, posts } = Astro.props
+---
+
+<Layout title={`${subcategory} | ${categoryLabel} | Blog | My Site`}>
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <p class="text-sm text-muted tracking-widest uppercase mb-2 font-semibold">Blog</p>
+    <div class="flex items-center gap-2 mb-8">
+      <a href={`/blog/category/${category}`} class="text-3xl font-extrabold text-muted hover:text-text transition-colors">
+        {categoryLabel}
+      </a>
+      <span class="text-2xl text-muted">/</span>
+      <h1 class="text-3xl font-extrabold text-text">{subcategory}</h1>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-10">
+      <a
+        href="/blog"
+        class="text-xs px-4 py-1.5 rounded-full font-semibold bg-surface border border-border text-muted hover:border-brand/60 hover:text-brand transition-colors"
+      >
+        すべて
+      </a>
+      {CATEGORIES.map(cat => (
+        <a
+          href={`/blog/category/${cat.slug}`}
+          class={`text-xs px-4 py-1.5 rounded-full font-semibold border transition-colors ${
+            cat.slug === category
+              ? 'bg-brand text-bg border-brand'
+              : 'bg-surface border-border text-muted hover:border-brand/60 hover:text-brand'
+          }`}
+        >
+          {cat.label}
+        </a>
+      ))}
+    </div>
+
+    {posts.length === 0 ? (
+      <p class="text-sm text-muted">まだ記事がありません。</p>
+    ) : (
+      <ul class="space-y-3">
+        {posts.map((post: any) => (
+          <li>
+            <a
+              href={`/blog/${post.id}`}
+              class="group flex items-center justify-between bg-surface border border-border rounded-2xl px-5 py-4 hover:border-brand/60 transition-colors"
+            >
+              <div>
+                <p class="text-sm font-bold text-text group-hover:text-brand transition-colors">
+                  {post.data.title}
+                </p>
+                <p class="text-xs text-muted mt-1 font-medium">{post.data.description}</p>
+              </div>
+              <span class="text-xs text-muted ml-6 shrink-0 font-medium">
+                {post.data.pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Layout>

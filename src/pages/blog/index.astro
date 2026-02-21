@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import { getCollection } from 'astro:content'
+import { CATEGORIES, getCategoryLabel } from '../../lib/categories'
+import type { CategorySlug } from '../../lib/categories'
 
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -9,7 +11,22 @@ const posts = (await getCollection('blog'))
 <Layout title="Blog | My Site">
   <div class="max-w-5xl mx-auto px-8 py-16">
     <p class="text-sm text-muted tracking-widest uppercase mb-2 font-semibold">Blog</p>
-    <h1 class="text-3xl font-extrabold text-text mb-12">すべての記事</h1>
+    <h1 class="text-3xl font-extrabold text-text mb-8">すべての記事</h1>
+
+    <div class="flex flex-wrap gap-2 mb-10">
+      <span class="text-xs px-4 py-1.5 rounded-full font-semibold bg-brand text-bg border border-brand">
+        すべて
+      </span>
+      {CATEGORIES.map(cat => (
+        <a
+          href={`/blog/category/${cat.slug}`}
+          class="text-xs px-4 py-1.5 rounded-full font-semibold bg-surface border border-border text-muted hover:border-brand/60 hover:text-brand transition-colors"
+        >
+          {cat.label}
+        </a>
+      ))}
+    </div>
+
     <ul class="space-y-3">
       {posts.map(post => (
         <li>
@@ -18,6 +35,18 @@ const posts = (await getCollection('blog'))
             class="group flex items-center justify-between bg-surface border border-border rounded-2xl px-5 py-4 hover:border-brand/60 transition-colors"
           >
             <div>
+              {post.data.category && (
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="text-xs px-2 py-0.5 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold">
+                    {getCategoryLabel(post.data.category as CategorySlug)}
+                  </span>
+                  {post.data.subcategory && (
+                    <span class="text-xs text-muted font-medium">
+                      {post.data.subcategory}
+                    </span>
+                  )}
+                </div>
+              )}
               <p class="text-sm font-bold text-text group-hover:text-brand transition-colors">
                 {post.data.title}
               </p>

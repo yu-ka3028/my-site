@@ -2,7 +2,8 @@
 title: Astro を初めて使ってみた感想
 description: 個人サイト構築に Astro を選んだ理由と使ってみた感想。
 pubDate: 2026-02-21
-tags: [技術, Astro]
+category: tech
+subcategory: astro
 ---
 
 個人サイトを構築するにあたって Astro を選びました。

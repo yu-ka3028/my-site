@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import { getCollection, render } from 'astro:content'
+import { getCategoryLabel } from '../../lib/categories'
+import type { CategorySlug } from '../../lib/categories'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
@@ -25,15 +27,24 @@ const { Content } = await render(post)
         <p class="text-sm text-muted mt-3 font-medium">
           {post.data.pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
-        {post.data.tags && (
-          <div class="flex gap-2 mt-4">
-            {post.data.tags.map(tag => (
-              <span class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        <div class="flex flex-wrap items-center gap-2 mt-4">
+          {post.data.category && (
+            <a
+              href={post.data.subcategory
+                ? `/blog/category/${post.data.category}/${post.data.subcategory}`
+                : `/blog/category/${post.data.category}`}
+              class="text-xs px-3 py-1 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold hover:bg-brand/20 transition-colors"
+            >
+              {getCategoryLabel(post.data.category as CategorySlug)}
+              {post.data.subcategory && ` / ${post.data.subcategory}`}
+            </a>
+          )}
+          {post.data.tags && post.data.tags.map(tag => (
+            <span class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold">
+              {tag}
+            </span>
+          ))}
+        </div>
       </header>
       <div class="prose max-w-none
         [--tw-prose-body:#f5e6d3]
