@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string
+}
+const { class: className = '' } = Astro.props
+---
+
+<svg class={className} viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main pad -->
+  <ellipse cx="32" cy="46" rx="14" ry="11"/>
+  <!-- Toe pads -->
+  <circle cx="14" cy="30" r="7"/>
+  <circle cx="29" cy="22" r="7"/>
+  <circle cx="44" cy="22" r="7"/>
+  <circle cx="50" cy="34" r="7"/>
+</svg>

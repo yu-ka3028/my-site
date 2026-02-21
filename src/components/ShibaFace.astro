@@ -1,0 +1,33 @@
+---
+interface Props {
+  class?: string
+}
+const { class: className = '' } = Astro.props
+---
+
+<svg class={className} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <circle cx="100" cy="112" r="75" fill="#e8703a"/>
+  <!-- Left ear -->
+  <path d="M44 78 L26 18 L78 62 Z" fill="#e8703a"/>
+  <!-- Right ear -->
+  <path d="M156 78 L174 18 L122 62 Z" fill="#e8703a"/>
+  <!-- Inner ears -->
+  <path d="M48 74 L36 28 L72 62 Z" fill="#c85228"/>
+  <path d="M152 74 L164 28 L128 62 Z" fill="#c85228"/>
+  <!-- Muzzle -->
+  <ellipse cx="100" cy="130" rx="46" ry="38" fill="#f0d9b5"/>
+  <!-- Eyes -->
+  <circle cx="77" cy="100" r="12" fill="#241a0f"/>
+  <circle cx="123" cy="100" r="12" fill="#241a0f"/>
+  <!-- Eye shine -->
+  <circle cx="79" cy="97" r="4" fill="white"/>
+  <circle cx="125" cy="97" r="4" fill="white"/>
+  <!-- Nose -->
+  <ellipse cx="100" cy="120" rx="10" ry="8" fill="#241a0f"/>
+  <!-- Mouth -->
+  <path d="M91 132 Q100 142 109 132" stroke="#241a0f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Blush -->
+  <circle cx="63" cy="130" r="15" fill="#d4622a" opacity="0.35"/>
+  <circle cx="137" cy="130" r="15" fill="#d4622a" opacity="0.35"/>
+</svg>

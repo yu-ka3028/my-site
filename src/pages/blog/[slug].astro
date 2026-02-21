@@ -15,25 +15,40 @@ const { Content } = await render(post)
 ---
 
 <Layout title={`${post.data.title} | My Site`} description={post.data.description}>
-  <article>
-    <header class="mb-8">
-      <a href="/blog" class="text-sm text-gray-400 hover:text-gray-700 transition-colors">
-        ← Blog
-      </a>
-      <h1 class="text-2xl font-bold mt-4">{post.data.title}</h1>
-      <p class="text-sm text-gray-400 mt-2">
-        {post.data.pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
-      </p>
-      {post.data.tags && (
-        <div class="flex gap-2 mt-3">
-          {post.data.tags.map(tag => (
-            <span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">{tag}</span>
-          ))}
-        </div>
-      )}
-    </header>
-    <div class="prose prose-gray max-w-none">
-      <Content />
-    </div>
-  </article>
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <article class="max-w-2xl">
+      <header class="mb-12">
+        <a href="/blog" class="text-xs text-muted hover:text-brand transition-colors font-semibold">
+          ← Blog
+        </a>
+        <h1 class="text-3xl font-extrabold text-text mt-6 leading-snug">{post.data.title}</h1>
+        <p class="text-sm text-muted mt-3 font-medium">
+          {post.data.pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+        {post.data.tags && (
+          <div class="flex gap-2 mt-4">
+            {post.data.tags.map(tag => (
+              <span class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+      <div class="prose max-w-none
+        [--tw-prose-body:#f5e6d3]
+        [--tw-prose-headings:#fdf0e0]
+        [--tw-prose-links:#e8703a]
+        [--tw-prose-bold:#fdf0e0]
+        [--tw-prose-code:#e8703a]
+        [--tw-prose-pre-bg:#241a0f]
+        [--tw-prose-pre-code:#f5e6d3]
+        [--tw-prose-quotes:#9b7d5e]
+        [--tw-prose-quote-borders:#e8703a]
+        [--tw-prose-hr:#3d2b1a]
+        [--tw-prose-bullets:#9b7d5e]">
+        <Content />
+      </div>
+    </article>
+  </div>
 </Layout>

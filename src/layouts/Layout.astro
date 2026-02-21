@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import PawIcon from '../components/PawIcon.astro'
 
 interface Props {
   title: string
@@ -17,19 +18,23 @@ const pathname = Astro.url.pathname
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
-  <body class="bg-white text-gray-900 min-h-screen flex flex-col">
-    <header class="border-b border-gray-200">
-      <nav class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/" class="font-bold text-lg tracking-tight hover:opacity-70 transition-opacity">
+  <body class="bg-bg text-text min-h-screen flex flex-col">
+    <header class="border-b border-border sticky top-0 bg-bg/90 backdrop-blur-sm z-10">
+      <nav class="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between">
+        <a href="/" class="font-extrabold text-base text-brand hover:opacity-80 transition-opacity flex items-center gap-2">
+          <PawIcon class="w-5 h-5 text-brand" />
           My Site
         </a>
-        <ul class="flex gap-6 text-sm">
+        <ul class="flex gap-8 text-sm font-semibold">
           <li>
             <a
               href="/"
-              class={`hover:text-gray-500 transition-colors ${pathname === '/' ? 'font-semibold' : ''}`}
+              class={`transition-colors ${pathname === '/' ? 'text-brand' : 'text-muted hover:text-text'}`}
             >
               Home
             </a>
@@ -37,7 +42,7 @@ const pathname = Astro.url.pathname
           <li>
             <a
               href="/blog"
-              class={`hover:text-gray-500 transition-colors ${pathname.startsWith('/blog') ? 'font-semibold' : ''}`}
+              class={`transition-colors ${pathname.startsWith('/blog') ? 'text-brand' : 'text-muted hover:text-text'}`}
             >
               Blog
             </a>
@@ -46,13 +51,14 @@ const pathname = Astro.url.pathname
       </nav>
     </header>
 
-    <main class="max-w-2xl mx-auto px-6 py-12 flex-1 w-full">
+    <main class="flex-1 w-full">
       <slot />
     </main>
 
-    <footer class="border-t border-gray-200">
-      <div class="max-w-2xl mx-auto px-6 py-6 text-center text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} My Site
+    <footer class="border-t border-border">
+      <div class="max-w-5xl mx-auto px-8 py-8 flex items-center justify-center gap-2 text-sm text-muted">
+        <PawIcon class="w-4 h-4" />
+        <span>&copy; {new Date().getFullYear()} My Site</span>
       </div>
     </footer>
   </body>
