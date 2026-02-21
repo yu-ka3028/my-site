@@ -15,46 +15,28 @@ const posts = (await getCollection('blog'))
     <div class="max-w-5xl mx-auto px-8 py-24 relative z-10">
 
       <p class="text-sm text-muted mb-4 tracking-widest uppercase font-semibold">Portfolio</p>
-      <h1 class="text-6xl font-extrabold text-brand mb-6 leading-tight">Your Name</h1>
+      <h1 class="text-6xl font-extrabold text-brand mb-6 leading-tight">Yu-ka</h1>
       <p class="text-lg text-text/70 max-w-md leading-relaxed mb-10 font-medium">
-        こんにちは。Web 開発が好きなエンジニアです。
-        技術的なことや日々の学びを発信しています。
+          柴犬好き、元薬剤師のエンジニアです。
+          技術的なことや日々の学びを発信しています。
       </p>
-      <div class="flex gap-4">
+      <div class="flex gap-4 mb-8">
         <a
           href="/blog"
           class="px-6 py-3 bg-brand text-bg font-bold rounded-2xl text-sm hover:bg-brand/90 transition-colors"
         >
           Blog を読む →
         </a>
-        <a
-          href="https://github.com"
-          class="px-6 py-3 border border-border text-text font-bold rounded-2xl text-sm hover:border-brand hover:text-brand transition-colors"
-        >
-          GitHub
-        </a>
       </div>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section class="border-t border-border">
-    <div class="max-w-5xl mx-auto px-8 py-16">
-      <p class="text-sm text-muted tracking-widest uppercase mb-8 font-semibold">Skills</p>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {[
-          { name: 'TypeScript', desc: '型安全な開発' },
-          { name: 'React / Next.js', desc: 'フロントエンド' },
-          { name: 'Astro', desc: '静的サイト' },
-          { name: 'Tailwind CSS', desc: 'スタイリング' },
-          { name: 'Node.js', desc: 'バックエンド' },
-          { name: 'Git / GitHub', desc: 'バージョン管理' },
-        ].map(skill => (
-          <div class="bg-surface border border-border rounded-2xl p-5 hover:border-brand/60 transition-colors">
-            <p class="font-bold text-text text-sm">{skill.name}</p>
-            <p class="text-muted text-xs mt-1 font-medium">{skill.desc}</p>
-          </div>
-        ))}
+      <div class="flex flex-wrap gap-5">
+        <a href="https://x.com/yu-ka3028" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-muted hover:text-brand transition-colors font-semibold">X</a>
+        <a href="https://github.com/yu-ka3028" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-muted hover:text-brand transition-colors font-semibold">GitHub</a>
+        <a href="https://note.com/yuuka_3028" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-muted hover:text-brand transition-colors font-semibold">Note</a>
+        <a href="https://yu-ka308.hatenablog.com/" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-muted hover:text-brand transition-colors font-semibold">HatenaBlog</a>
       </div>
     </div>
   </section>
