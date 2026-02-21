@@ -1,6 +1,6 @@
 ---
-title: Astro を使ってみた感想
-description: 個人サイト構築に Astro を選んだ理由と使ってみた感想をまとめます。
+title: Astro を初めて使ってみた感想
+description: 個人サイト構築に Astro を選んだ理由と使ってみた感想。
 pubDate: 2026-02-21
 tags: [技術, Astro]
 ---
@@ -31,4 +31,4 @@ const posts = await getCollection('blog')
 
 ## まとめ
 
-静的コンテンツ中心のサイトには Astro が非常におすすめです。
+静的コンテンツ中心のサイトでMarkdownで書くなら、とても手軽でした。。
