@@ -2,7 +2,7 @@
 title: はじめての投稿
 description: 個人サイトを作りました。
 pubDate: 2026-02-21
-tags: [連絡]
+category: info
 ---
 
 個人サイトを作成しました。
