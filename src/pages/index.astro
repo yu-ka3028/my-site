@@ -6,6 +6,8 @@ import { getCollection } from 'astro:content'
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3)
+
+const skills = ['TypeScript', 'React / Next.js', 'Astro', 'Tailwind CSS', 'Node.js', 'Git / GitHub']
 ---
 
 <Layout title="My Site">
@@ -15,11 +17,22 @@ const posts = (await getCollection('blog'))
     <div class="max-w-5xl mx-auto px-8 py-24 relative z-10">
 
       <p class="text-sm text-muted mb-4 tracking-widest uppercase font-semibold">Portfolio</p>
-      <h1 class="text-6xl font-extrabold text-brand mb-6 leading-tight">Yu-ka</h1>
-      <p class="text-lg text-text/70 max-w-md leading-relaxed mb-10 font-medium">
-          柴犬好き、元薬剤師のエンジニアです。
-          技術的なことや日々の学びを発信しています。
+      <div class="flex items-center gap-5 mb-6">
+        <button
+          onclick="document.getElementById('icon-modal').showModal()"
+          class="cursor-pointer rounded-full hover:opacity-80 transition-opacity shrink-0"
+          aria-label="アイコンを拡大表示"
+        >
+          <img src="/icon.png" alt="Yu-ka icon" class="w-20 h-20 rounded-full object-cover border-2 border-border" />
+        </button>
+        <h1 class="text-6xl font-extrabold text-brand leading-tight">Yu-ka</h1>
+      </div>
+
+      <p class="text-lg text-text/70 max-w-md leading-relaxed mb-6 font-medium">
+        柴犬好き、元薬剤師のエンジニアです。
+        技術的なことや日々の学びを発信しています。
       </p>
+
       <div class="flex gap-4 mb-8">
         <a
           href="/blog"
@@ -69,4 +82,34 @@ const posts = (await getCollection('blog'))
       </ul>
     </div>
   </section>
+
+  <!-- Icon modal -->
+  <dialog
+    id="icon-modal"
+    onclick="this.close()"
+    class="rounded-2xl border border-border bg-bg p-0 max-w-xs w-full shadow-2xl backdrop:bg-black/70"
+  >
+    <img src="/icon.png" alt="Yu-ka icon" class="w-full rounded-t-2xl" />
+    <div class="px-5 py-4">
+      <p class="text-xs text-muted tracking-widest uppercase font-semibold mb-3">Skills</p>
+      <div class="flex flex-wrap gap-2">
+        {skills.map(skill => (
+          <span class="text-xs px-3 py-1 bg-surface border border-border rounded-full text-muted font-semibold">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  </dialog>
+
+  <style>
+    #icon-modal {
+      position: fixed;
+      top: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </Layout>
