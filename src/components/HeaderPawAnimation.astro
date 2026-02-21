@@ -1,0 +1,46 @@
+---
+---
+
+<!-- ヘッダーには尻尾のみ -->
+<div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+  <div class="shiba-tail">
+    <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!--
+        しば犬の尻尾: 根元(28,38)から外側の大きな弧を描き、
+        内側に巻き込んで「e」字型のスパイラルを形成
+      -->
+      <path
+        d="M28 38
+           C36 30, 38 14, 26 6
+           C14 -2, 2 8, 2 20
+           C2 32, 12 38, 22 36
+           C30 34, 32 26, 26 22
+           C20 18, 12 20, 12 26
+           C12 31, 18 33, 22 30"
+        stroke="currentColor"
+        stroke-width="2.5"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+</div>
+
+<style>
+  @keyframes tail-wag {
+    0%   { transform: rotate(-18deg); }
+    50%  { transform: rotate(14deg); }
+    100% { transform: rotate(-18deg); }
+  }
+
+  .shiba-tail {
+    position: absolute;
+    right: 22px;
+    bottom: 2px;
+    color: var(--color-brand);
+    opacity: 0.55;
+    transform-origin: 13% 94%; /* 根元を軸に振る */
+    animation: tail-wag 0.8s ease-in-out infinite;
+  }
+</style>

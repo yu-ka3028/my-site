@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import PawIcon from '../components/PawIcon.astro'
+import HeroPawAnimation from '../components/HeroPawAnimation.astro'
 import { getCollection } from 'astro:content'
 
 const posts = (await getCollection('blog'))
@@ -10,15 +10,9 @@ const posts = (await getCollection('blog'))
 
 <Layout title="My Site">
   <!-- Hero -->
-  <section
-    class="relative overflow-hidden"
-    style="background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 64 64'%3E%3Cg fill='%23a3b54a' opacity='0.04'%3E%3Cellipse cx='32' cy='46' rx='14' ry='11'/%3E%3Ccircle cx='14' cy='30' r='7'/%3E%3Ccircle cx='29' cy='22' r='7'/%3E%3Ccircle cx='44' cy='22' r='7'/%3E%3Ccircle cx='50' cy='34' r='7'/%3E%3C/g%3E%3C/svg%3E\");"
-  >
-    <div class="max-w-5xl mx-auto px-8 py-24 relative">
-      <!-- 装飾肉球 -->
-      <PawIcon class="absolute top-10 right-24 w-16 h-16 text-brand opacity-10 rotate-12" />
-      <PawIcon class="absolute bottom-16 right-10 w-10 h-10 text-brand opacity-10 -rotate-20" />
-      <PawIcon class="absolute top-1/2 right-48 w-7 h-7 text-brand opacity-10 rotate-45" />
+  <section class="relative overflow-hidden">
+    <HeroPawAnimation />
+    <div class="max-w-5xl mx-auto px-8 py-24 relative z-10">
 
       <p class="text-sm text-muted mb-4 tracking-widest uppercase font-semibold">Portfolio</p>
       <h1 class="text-6xl font-extrabold text-brand mb-6 leading-tight">Your Name</h1>
