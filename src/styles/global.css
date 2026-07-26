@@ -14,3 +14,42 @@
 body {
 	font-family: var(--font-family-sans);
 }
+
+.diff-list {
+	list-style: none;
+	margin: 0.75rem 0;
+	padding-left: 0;
+}
+
+.diff-list li {
+	position: relative;
+	padding-left: 1.25rem;
+	margin: 0.25rem 0;
+}
+
+.diff-list .diff-before {
+	color: var(--color-muted);
+}
+
+.diff-list .diff-before::before {
+	content: "-";
+	position: absolute;
+	left: 0;
+	font-weight: 700;
+}
+
+.diff-list .diff-after {
+	color: var(--color-brand);
+}
+
+.diff-list .diff-after::before {
+	content: "+";
+	position: absolute;
+	left: 0;
+	font-weight: 700;
+}
+
+.diff-list .diff-after a {
+	color: inherit;
+	text-decoration: underline;
+}

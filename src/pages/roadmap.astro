@@ -1,0 +1,83 @@
+---
+import { getCollection } from "astro:content";
+import RoadmapGraph from "../components/RoadmapGraph.astro";
+import Layout from "../layouts/Layout.astro";
+import type { TopicCategorySlug } from "../lib/categories";
+import {
+	getTopicCategoryColor,
+	getTopicCategoryLabel,
+	TOPIC_CATEGORIES,
+} from "../lib/categories";
+import { enrichTopics } from "../lib/topics";
+
+const [topics, roundups] = await Promise.all([
+	getCollection("topics"),
+	getCollection("roundups"),
+]);
+const enriched = enrichTopics(topics, roundups);
+const slugs = new Set(topics.map((t) => t.data.slug));
+
+const nodes = topics.map((t) => ({
+	id: t.data.slug,
+	title: t.data.title,
+	category: t.data.category,
+	color: getTopicCategoryColor(t.data.category as TopicCategorySlug),
+	status: t.data.status,
+	count: enriched.get(t.data.slug)?.count ?? 0,
+}));
+
+const rawEdges: { source: string; target: string; directed: boolean }[] = [];
+for (const t of topics) {
+	for (const rel of t.data.related) {
+		if (slugs.has(rel))
+			rawEdges.push({ source: t.data.slug, target: rel, directed: false });
+	}
+	for (const pre of t.data.prerequisite) {
+		if (slugs.has(pre))
+			rawEdges.push({ source: pre, target: t.data.slug, directed: true });
+	}
+}
+
+const seenUndirected = new Set<string>();
+const edges = rawEdges.filter((e) => {
+	if (e.directed) return true;
+	const key = [e.source, e.target].sort().join("|");
+	if (seenUndirected.has(key)) return false;
+	seenUndirected.add(key);
+	return true;
+});
+---
+
+<Layout title="Roadmap | My Site">
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <p class="text-sm text-muted tracking-widest uppercase mb-2 font-semibold">Roadmap</p>
+    <h1 class="text-3xl font-extrabold text-text mb-4">技術トピック相関図</h1>
+    <p class="text-sm text-muted mb-8 font-medium">
+      ノードをドラッグ、ホイールでズームできます。クリックでトピック詳細へ。
+    </p>
+
+    <div class="flex flex-wrap gap-4 mb-6 text-xs text-muted font-medium">
+      {TOPIC_CATEGORIES.map((cat) => (
+        <span class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full inline-block" style={`background-color:${cat.color}`} />
+          {getTopicCategoryLabel(cat.slug)}
+        </span>
+      ))}
+    </div>
+
+    {nodes.length > 0 ? (
+      <RoadmapGraph nodes={nodes} edges={edges} />
+    ) : (
+      <div class="bg-surface border border-border rounded-2xl px-5 py-12 text-center text-sm text-muted">
+        まだトピックがありません。
+      </div>
+    )}
+
+    <div class="flex flex-wrap gap-x-6 gap-y-2 mt-6 text-xs text-muted font-medium">
+      <span>大きさ = roundup紐づき回数</span>
+      <span>濃さ = ステータス（探索中が薄く、実践中が濃い）</span>
+      <span>→ = 前提知識（prerequisite）</span>
+      <span>— = 関連（related）</span>
+    </div>
+  </div>
+</Layout>

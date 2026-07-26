@@ -32,7 +32,7 @@ const pathname = Astro.url.pathname;
           <PawIcon class="w-5 h-5 text-brand" />
           My Site
         </a>
-        <ul class="flex gap-8 text-sm font-semibold">
+        <ul class="flex gap-6 text-sm font-semibold">
           <li>
             <a
               href="/"
@@ -63,6 +63,22 @@ const pathname = Astro.url.pathname;
               class={`transition-colors ${pathname.startsWith('/roundups') ? 'text-brand' : 'text-muted hover:text-text'}`}
             >
               Projects
+            </a>
+          </li>
+          <li>
+            <a
+              href="/roadmap"
+              class={`transition-colors ${pathname.startsWith('/roadmap') ? 'text-brand' : 'text-muted hover:text-text'}`}
+            >
+              Roadmap
+            </a>
+          </li>
+          <li>
+            <a
+              href="/about"
+              class={`transition-colors ${pathname.startsWith('/about') ? 'text-brand' : 'text-muted hover:text-text'}`}
+            >
+              About
             </a>
           </li>
         </ul>
