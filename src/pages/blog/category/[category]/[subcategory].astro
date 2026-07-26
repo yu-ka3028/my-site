@@ -1,40 +1,52 @@
 ---
-import Layout from '../../../../layouts/Layout.astro'
-import { getCollection } from 'astro:content'
-import { CATEGORIES, getCategoryLabel } from '../../../../lib/categories'
-import type { CategorySlug } from '../../../../lib/categories'
+import { getCollection } from "astro:content";
+import Layout from "../../../../layouts/Layout.astro";
+import type { CategorySlug } from "../../../../lib/categories";
+import { CATEGORIES, getCategoryLabel } from "../../../../lib/categories";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('blog')
-  const paths: { params: { category: string; subcategory: string }; props: object }[] = []
+	const allPosts = await getCollection("blog");
+	const paths: {
+		params: { category: string; subcategory: string };
+		props: object;
+	}[] = [];
 
-  for (const post of allPosts) {
-    if (post.data.category && post.data.subcategory) {
-      const catPosts = allPosts
-        .filter(p => p.data.category === post.data.category && p.data.subcategory === post.data.subcategory)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	for (const post of allPosts) {
+		if (post.data.category && post.data.subcategory) {
+			const catPosts = allPosts
+				.filter(
+					(p) =>
+						p.data.category === post.data.category &&
+						p.data.subcategory === post.data.subcategory,
+				)
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-      const already = paths.some(
-        p => p.params.category === post.data.category && p.params.subcategory === post.data.subcategory
-      )
-      if (!already) {
-        paths.push({
-          params: { category: post.data.category, subcategory: post.data.subcategory },
-          props: {
-            categoryLabel: getCategoryLabel(post.data.category as CategorySlug),
-            subcategory: post.data.subcategory,
-            posts: catPosts,
-          },
-        })
-      }
-    }
-  }
+			const already = paths.some(
+				(p) =>
+					p.params.category === post.data.category &&
+					p.params.subcategory === post.data.subcategory,
+			);
+			if (!already) {
+				paths.push({
+					params: {
+						category: post.data.category,
+						subcategory: post.data.subcategory,
+					},
+					props: {
+						categoryLabel: getCategoryLabel(post.data.category as CategorySlug),
+						subcategory: post.data.subcategory,
+						posts: catPosts,
+					},
+				});
+			}
+		}
+	}
 
-  return paths
+	return paths;
 }
 
-const { category } = Astro.params
-const { categoryLabel, subcategory, posts } = Astro.props
+const { category } = Astro.params;
+const { categoryLabel, subcategory, posts } = Astro.props;
 ---
 
 <Layout title={`${subcategory} | ${categoryLabel} | Blog | My Site`}>

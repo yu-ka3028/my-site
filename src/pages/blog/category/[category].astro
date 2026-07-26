@@ -1,27 +1,31 @@
 ---
-import Layout from '../../../layouts/Layout.astro'
-import { getCollection } from 'astro:content'
-import { CATEGORIES, getCategoryLabel } from '../../../lib/categories'
-import type { CategorySlug } from '../../../lib/categories'
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import type { CategorySlug } from "../../../lib/categories";
+import { CATEGORIES, getCategoryLabel } from "../../../lib/categories";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('blog')
-  return CATEGORIES.map(cat => {
-    const posts = allPosts
-      .filter(p => p.data.category === cat.slug)
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	const allPosts = await getCollection("blog");
+	return CATEGORIES.map((cat) => {
+		const posts = allPosts
+			.filter((p) => p.data.category === cat.slug)
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-    const subcategories = [...new Set(posts.flatMap(p => p.data.subcategory ? [p.data.subcategory] : []))]
+		const subcategories = [
+			...new Set(
+				posts.flatMap((p) => (p.data.subcategory ? [p.data.subcategory] : [])),
+			),
+		];
 
-    return {
-      params: { category: cat.slug },
-      props: { label: cat.label, posts, subcategories },
-    }
-  })
+		return {
+			params: { category: cat.slug },
+			props: { label: cat.label, posts, subcategories },
+		};
+	});
 }
 
-const { category } = Astro.params
-const { label, posts, subcategories } = Astro.props
+const { category } = Astro.params;
+const { label, posts, subcategories } = Astro.props;
 ---
 
 <Layout title={`${label} | Blog | My Site`}>
