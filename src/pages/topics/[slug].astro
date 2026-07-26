@@ -1,0 +1,99 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import type { TopicCategorySlug } from "../../lib/categories";
+import { getStatusLabel, getTopicCategoryLabel } from "../../lib/categories";
+
+export async function getStaticPaths() {
+	const topics = await getCollection("topics");
+	return topics.map((topic) => ({
+		params: { slug: topic.data.slug },
+		props: { topic, allTopics: topics },
+	}));
+}
+
+const { topic, allTopics } = Astro.props;
+const { Content } = await render(topic);
+
+function findTitle(slug: string): string {
+	return allTopics.find((t) => t.data.slug === slug)?.data.title ?? slug;
+}
+---
+
+<Layout title={`${topic.data.title} | Topics | My Site`}>
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <article class="max-w-2xl">
+      <header class="mb-12">
+        <a href="/topics" class="text-xs text-muted hover:text-brand transition-colors font-semibold">
+          ← Topics
+        </a>
+        <h1 class="text-3xl font-extrabold text-text mt-6 leading-snug">{topic.data.title}</h1>
+        <p class="text-sm text-muted mt-3 font-medium">
+          {topic.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {topic.data.updated && (
+            <>（更新: {topic.data.updated.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}）</>
+          )}
+        </p>
+        <div class="flex flex-wrap items-center gap-2 mt-4">
+          <span class="text-xs px-3 py-1 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold">
+            {getStatusLabel(topic.data.status)}
+          </span>
+          <span class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold">
+            {getTopicCategoryLabel(topic.data.category as TopicCategorySlug)}
+          </span>
+          {topic.data.tags && topic.data.tags.map(tag => (
+            <span class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold">
+              {tag}
+            </span>
+          ))}
+        </div>
+        {topic.data.constraint_context && (
+          <p class="text-xs text-muted mt-4 font-medium italic">{topic.data.constraint_context}</p>
+        )}
+      </header>
+      <div class="prose max-w-none
+        [--tw-prose-body:#f5e6d3]
+        [--tw-prose-headings:#fdf0e0]
+        [--tw-prose-links:#e8703a]
+        [--tw-prose-bold:#fdf0e0]
+        [--tw-prose-code:#e8703a]
+        [--tw-prose-pre-bg:#241a0f]
+        [--tw-prose-pre-code:#f5e6d3]
+        [--tw-prose-quotes:#9b7d5e]
+        [--tw-prose-quote-borders:#e8703a]
+        [--tw-prose-hr:#3d2b1a]
+        [--tw-prose-bullets:#9b7d5e]">
+        <Content />
+      </div>
+
+      {(topic.data.prerequisite.length > 0 || topic.data.related.length > 0) && (
+        <footer class="mt-12 pt-8 border-t border-border space-y-4">
+          {topic.data.prerequisite.length > 0 && (
+            <div>
+              <p class="text-xs text-muted uppercase tracking-widest font-semibold mb-2">前提知識 →</p>
+              <div class="flex flex-wrap gap-2">
+                {topic.data.prerequisite.map(slug => (
+                  <a href={`/topics/${slug}`} class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold hover:border-brand/60 hover:text-brand transition-colors">
+                    {findTitle(slug)}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          {topic.data.related.length > 0 && (
+            <div>
+              <p class="text-xs text-muted uppercase tracking-widest font-semibold mb-2">関連</p>
+              <div class="flex flex-wrap gap-2">
+                {topic.data.related.map(slug => (
+                  <a href={`/topics/${slug}`} class="text-xs px-3 py-1 bg-surface border border-border text-muted rounded-full font-semibold hover:border-brand/60 hover:text-brand transition-colors">
+                    {findTitle(slug)}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </footer>
+      )}
+    </article>
+  </div>
+</Layout>

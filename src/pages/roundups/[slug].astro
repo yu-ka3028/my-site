@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getStatusLabel } from "../../lib/categories";
+import { enrichTopics } from "../../lib/topics";
+
+export async function getStaticPaths() {
+	const [roundups, topics] = await Promise.all([
+		getCollection("roundups"),
+		getCollection("topics"),
+	]);
+	const enriched = enrichTopics(topics, roundups);
+
+	return roundups.map((roundup) => ({
+		params: { slug: roundup.id },
+		props: {
+			roundup,
+			summarizedTopics: roundup.data.summarizes
+				.map((slug) => enriched.get(slug))
+				.filter((t) => t !== undefined),
+		},
+	}));
+}
+
+const { roundup, summarizedTopics } = Astro.props;
+const { Content } = await render(roundup);
+---
+
+<Layout title={`${roundup.data.title} | Roundups | My Site`}>
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <article class="max-w-2xl">
+      <header class="mb-12">
+        <a href="/roundups" class="text-xs text-muted hover:text-brand transition-colors font-semibold">
+          ← Roundups
+        </a>
+        <h1 class="text-3xl font-extrabold text-text mt-6 leading-snug">{roundup.data.title}</h1>
+        <p class="text-sm text-muted mt-3 font-medium">
+          {roundup.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+      </header>
+      <div class="prose max-w-none
+        [--tw-prose-body:#f5e6d3]
+        [--tw-prose-headings:#fdf0e0]
+        [--tw-prose-links:#e8703a]
+        [--tw-prose-bold:#fdf0e0]
+        [--tw-prose-code:#e8703a]
+        [--tw-prose-pre-bg:#241a0f]
+        [--tw-prose-pre-code:#f5e6d3]
+        [--tw-prose-quotes:#9b7d5e]
+        [--tw-prose-quote-borders:#e8703a]
+        [--tw-prose-hr:#3d2b1a]
+        [--tw-prose-bullets:#9b7d5e]">
+        <Content />
+      </div>
+
+      {summarizedTopics.length > 0 && (
+        <footer class="mt-12 pt-8 border-t border-border">
+          <p class="text-xs text-muted uppercase tracking-widest font-semibold mb-4">まとめている Topics</p>
+          <ul class="space-y-3">
+            {summarizedTopics.map(info => (
+              <li>
+                <a
+                  href={`/topics/${info!.topic.data.slug}`}
+                  class="group flex items-center justify-between bg-surface border border-border rounded-2xl px-5 py-4 hover:border-brand/60 transition-colors"
+                >
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-0.5 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold">
+                      {getStatusLabel(info!.topic.data.status)}
+                    </span>
+                    {info!.core && (
+                      <span class="text-xs px-2 py-0.5 bg-yellow-400/10 border border-yellow-400/40 text-yellow-400 rounded-full font-semibold">
+                        コア
+                      </span>
+                    )}
+                    <span class="text-sm font-bold text-text group-hover:text-brand transition-colors">
+                      {info!.topic.data.title}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </footer>
+      )}
+    </article>
+  </div>
+</Layout>

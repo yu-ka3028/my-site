@@ -1,0 +1,69 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getStatusLabel, TOPIC_CATEGORIES } from "../../lib/categories";
+import { enrichTopics } from "../../lib/topics";
+
+const [topics, roundups] = await Promise.all([
+	getCollection("topics"),
+	getCollection("roundups"),
+]);
+const enriched = enrichTopics(topics, roundups);
+
+const sections = TOPIC_CATEGORIES.map((cat) => ({
+	...cat,
+	topics: topics
+		.filter((t) => t.data.category === cat.slug)
+		.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+}));
+---
+
+<Layout title="Topics | My Site">
+  <div class="max-w-5xl mx-auto px-8 py-16">
+    <p class="text-sm text-muted tracking-widest uppercase mb-2 font-semibold">Topics</p>
+    <h1 class="text-3xl font-extrabold text-text mb-10">技術トピック一覧</h1>
+
+    {sections.map(section => section.topics.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-lg font-extrabold text-text mb-4">{section.label}</h2>
+        <ul class="space-y-3">
+          {section.topics.map(topic => {
+            const info = enriched.get(topic.data.slug)
+            return (
+              <li>
+                <a
+                  href={`/topics/${topic.data.slug}`}
+                  class="group flex items-center justify-between bg-surface border border-border rounded-2xl px-5 py-4 hover:border-brand/60 transition-colors"
+                >
+                  <div>
+                    <div class="flex items-center gap-2 mb-1.5">
+                      <span class="text-xs px-2 py-0.5 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold">
+                        {getStatusLabel(topic.data.status)}
+                      </span>
+                      {info?.core && (
+                        <span class="text-xs px-2 py-0.5 bg-yellow-400/10 border border-yellow-400/40 text-yellow-400 rounded-full font-semibold">
+                          コア
+                        </span>
+                      )}
+                      {info?.unconnected && (
+                        <span class="text-xs px-2 py-0.5 bg-surface border border-border text-muted rounded-full font-semibold">
+                          未接続
+                        </span>
+                      )}
+                    </div>
+                    <p class="text-sm font-bold text-text group-hover:text-brand transition-colors">
+                      {topic.data.title}
+                    </p>
+                  </div>
+                  <span class="text-xs text-muted ml-6 shrink-0 font-medium">
+                    {topic.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                  </span>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Layout>

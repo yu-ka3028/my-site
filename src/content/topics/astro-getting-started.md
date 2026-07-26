@@ -1,14 +1,17 @@
 ---
 title: Astro を初めて使ってみた感想
-description: 個人サイト構築に Astro を選んだ理由と使ってみた感想。
-pubDate: 2026-02-21
-category: tech
-subcategory: astro
+slug: astro-getting-started
+date: 2026-02-21
+status: revisiting
+category: web
+tags: [astro]
+portfolio: false
+niche: false
 ---
 
-個人サイトを構築するにあたって Astro を選びました。
+## Before → After
 
-## なぜ Astro を選んだか
+個人サイトを構築するにあたって Astro を選びました。
 
 ブログ + プロフィールというシンプルな構成なら、Astro が最もフィットすると感じました。
 
@@ -16,7 +19,11 @@ subcategory: astro
 - JavaScript を最小限に抑えられる
 - ビルドが速い
 
-## 気に入った点
+## なぜこの技術が生まれたか
+
+（未執筆）
+
+## 今の環境でどう使えているか
 
 ### Content Collections
 
@@ -30,6 +37,8 @@ const posts = await getCollection('blog')
 
 デフォルトでJavaScriptを一切送信しません。パフォーマンスが自然と良くなります。
 
-## まとめ
+## 実践ログ（時系列、更新履歴を兼ねる）
 
-静的コンテンツ中心のサイトでMarkdownで書くなら、とても手軽でした。。
+### 2026-02-21
+
+静的コンテンツ中心のサイトでMarkdownで書くなら、とても手軽でした。
