@@ -1,15 +1,15 @@
 ---
-import '../styles/global.css'
-import PawIcon from '../components/PawIcon.astro'
-import HeaderPawAnimation from '../components/HeaderPawAnimation.astro'
+import "../styles/global.css";
+import HeaderPawAnimation from "../components/HeaderPawAnimation.astro";
+import PawIcon from "../components/PawIcon.astro";
 
 interface Props {
-  title: string
-  description?: string
+	title: string;
+	description?: string;
 }
 
-const { title, description = '個人サイト' } = Astro.props
-const pathname = Astro.url.pathname
+const { title, description = "個人サイト" } = Astro.props;
+const pathname = Astro.url.pathname;
 ---
 
 <html lang="ja">

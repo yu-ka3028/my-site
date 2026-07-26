@@ -1,13 +1,20 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import HeroPawAnimation from '../components/HeroPawAnimation.astro'
-import { getCollection } from 'astro:content'
+import { getCollection } from "astro:content";
+import HeroPawAnimation from "../components/HeroPawAnimation.astro";
+import Layout from "../layouts/Layout.astro";
 
-const posts = (await getCollection('blog'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3)
+const posts = (await getCollection("blog"))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
 
-const skills = ['TypeScript', 'React / Next.js', 'Astro', 'Tailwind CSS', 'Node.js', 'Git / GitHub']
+const skills = [
+	"TypeScript",
+	"React / Next.js",
+	"Astro",
+	"Tailwind CSS",
+	"Node.js",
+	"Git / GitHub",
+];
 ---
 
 <Layout title="My Site">
