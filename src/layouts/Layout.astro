@@ -27,7 +27,7 @@ const pathname = Astro.url.pathname;
   <body class="bg-bg text-text min-h-screen flex flex-col">
     <header class="border-b border-border sticky top-0 bg-bg/90 backdrop-blur-sm z-10 relative">
       <HeaderPawAnimation />
-      <nav class="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between relative z-10">
+      <nav class="max-w-5xl mx-auto pl-8 pr-16 py-4 flex items-center justify-between relative z-10">
         <a href="/" class="font-extrabold text-base text-brand hover:opacity-80 transition-opacity flex items-center gap-2">
           <PawIcon class="w-5 h-5 text-brand" />
           My Site
@@ -47,6 +47,22 @@ const pathname = Astro.url.pathname;
               class={`transition-colors ${pathname.startsWith('/blog') ? 'text-brand' : 'text-muted hover:text-text'}`}
             >
               Blog
+            </a>
+          </li>
+          <li>
+            <a
+              href="/topics"
+              class={`transition-colors ${pathname.startsWith('/topics') ? 'text-brand' : 'text-muted hover:text-text'}`}
+            >
+              Topics
+            </a>
+          </li>
+          <li>
+            <a
+              href="/roundups"
+              class={`transition-colors ${pathname.startsWith('/roundups') ? 'text-brand' : 'text-muted hover:text-text'}`}
+            >
+              Projects
             </a>
           </li>
         </ul>
