@@ -1,7 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { getStatusLabel, TOPIC_CATEGORIES } from "../../lib/categories";
+import {
+	getStatusIcon,
+	getStatusLabel,
+	TOPIC_CATEGORIES,
+} from "../../lib/categories";
 import { enrichTopics } from "../../lib/topics";
 
 const [topics, roundups] = await Promise.all([
@@ -37,8 +41,11 @@ const sections = TOPIC_CATEGORIES.map((cat) => ({
                 >
                   <div>
                     <div class="flex items-center gap-2 mb-1.5">
-                      <span class="text-xs px-2 py-0.5 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold">
-                        {getStatusLabel(topic.data.status)}
+                      <span
+                        class="flex items-center justify-center w-5 h-5 text-sm leading-none bg-brand/10 border border-brand/30 text-brand rounded-full"
+                        title={getStatusLabel(topic.data.status)}
+                      >
+                        {getStatusIcon(topic.data.status)}
                       </span>
                       {info?.core && (
                         <span class="text-xs px-2 py-0.5 bg-yellow-400/10 border border-yellow-400/40 text-yellow-400 rounded-full font-semibold">

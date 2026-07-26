@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { getStatusLabel } from "../../lib/categories";
+import { getStatusIcon, getStatusLabel } from "../../lib/categories";
 import { enrichTopics } from "../../lib/topics";
 
 export async function getStaticPaths() {
@@ -64,8 +64,11 @@ const { Content } = await render(roundup);
                   class="group flex items-center justify-between bg-surface border border-border rounded-2xl px-5 py-4 hover:border-brand/60 transition-colors"
                 >
                   <div class="flex items-center gap-2">
-                    <span class="text-xs px-2 py-0.5 bg-brand/10 border border-brand/30 text-brand rounded-full font-semibold">
-                      {getStatusLabel(info!.topic.data.status)}
+                    <span
+                      class="flex items-center justify-center w-5 h-5 text-sm leading-none bg-brand/10 border border-brand/30 text-brand rounded-full"
+                      title={getStatusLabel(info!.topic.data.status)}
+                    >
+                      {getStatusIcon(info!.topic.data.status)}
                     </span>
                     {info!.core && (
                       <span class="text-xs px-2 py-0.5 bg-yellow-400/10 border border-yellow-400/40 text-yellow-400 rounded-full font-semibold">

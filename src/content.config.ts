@@ -20,7 +20,7 @@ const topics = defineCollection({
 		slug: z.string(),
 		date: z.coerce.date(),
 		updated: z.coerce.date().optional(),
-		status: z.enum(["exploring", "practicing", "revisiting"]),
+		status: z.enum(["exploring", "practicing"]),
 		category: z.enum([
 			"architecture",
 			"sql",

@@ -2,9 +2,10 @@
 title: Astro を初めて使ってみた感想
 slug: astro-getting-started
 date: 2026-02-21
-status: revisiting
+status: practicing
 category: web
 tags: [astro]
+related: [claude-code-auto-mode]
 portfolio: false
 niche: false
 ---
